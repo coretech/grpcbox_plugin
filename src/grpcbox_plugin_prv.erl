@@ -198,9 +198,8 @@ list_snake_case(NameString) ->
                 %% uppercase with lowercase
                 %% or digit before it
                 "([a-z0-9])([A-Z])"]),
-    Snaked1 = string:replace(Snaked, ".", "_", all),
-    Snaked2 = string:replace(Snaked1, "__", "_", all),
-    string:to_lower(unicode:characters_to_list(Snaked2)).
+    Snaked_ = re:replace(Snaked, "\\.(\\.|_)?", "_", [{return, list}, global]),
+    string:to_lower(unicode:characters_to_list(Snaked_)).
 
 needs_update(Source, Artifact) ->
     filelib:last_modified(Source) >= filelib:last_modified(Artifact).
